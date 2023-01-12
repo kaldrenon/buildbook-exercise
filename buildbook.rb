@@ -19,27 +19,27 @@ class Buildbook < Thor
   def apply_changes(spotify, changes)
 
     # Add songs to playlists
-    changes['added_songs'].each do |newSong|
-      pl = spotify['playlists'].select { |pl| pl['id'] == newSong['playlist_id'] }.first
-      pl['song_ids'].push(newSong['song_id'])
+    changes['added_songs'].each do |new_song|
+      pl = spotify['playlists'].select { |pl| pl['id'] == new_song['playlist_id'] }.first
+      pl['song_ids'].push(new_song['song_id'])
     end
 
     # Add playlists
     playlist_ids = spotify['playlists'].map { |pl| pl["id"].to_i }.sort
-    changes['added_playlists'].each do |newPlaylist|
+    changes['added_playlists'].each do |new_playlist|
       new_pl_id = playlist_ids.last + 1
       playlist_ids.push(new_pl_id)
       spotify['playlists'].push({
         id: new_pl_id.to_s,
-        owner_id: newPlaylist['owner_id'],
-        song_ids: newPlaylist['song_ids']
+        owner_id: new_playlist['owner_id'],
+        song_ids: new_playlist['song_ids']
       })
     end
 
     # remove playlists
-    changes['removed_playlist_ids'].each do |removedId|
+    changes['removed_playlist_ids'].each do |removed_id|
       spotify['playlists'] = spotify['playlists'].reject do |pl|
-        pl['id'] == removedId
+        pl['id'] == removed_id
       end
     end
 

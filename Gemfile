@@ -1,2 +1,2 @@
-gem 'rails'
+gem 'json'
 gem 'thor'
